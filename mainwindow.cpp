@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include ".\\.src\\.libraries\\SQLITE\\sqlite3.h"
 #include <iostream>
 
 #include <QSqlDatabase>
