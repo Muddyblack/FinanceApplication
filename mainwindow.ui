@@ -71,7 +71,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <widget class="QFrame" name="frame_2">
@@ -158,7 +158,7 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLineEdit" name="lineEdit">
+        <widget class="QLineEdit" name="expensesPriceLine">
          <property name="geometry">
           <rect>
            <x>306</x>
@@ -168,10 +168,10 @@
           </rect>
          </property>
          <property name="text">
-          <string>Preis</string>
+          <string/>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_3">
+        <widget class="QComboBox" name="expensesCategoryComboBox">
          <property name="geometry">
           <rect>
            <x>420</x>
@@ -184,7 +184,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QTextEdit" name="textEdit">
+        <widget class="QTextEdit" name="expensesComment">
          <property name="geometry">
           <rect>
            <x>306</x>
@@ -202,7 +202,7 @@ hr { height: 1px; border-width: 0; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Kommentar&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_5">
+        <widget class="QPushButton" name="add_expenses_Button">
          <property name="geometry">
           <rect>
            <x>550</x>
