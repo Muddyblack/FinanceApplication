@@ -79,3 +79,15 @@ void MainWindow::on_add_expenses_Button_clicked()
     db.close();
 }
 
+
+void MainWindow::on_dashboardPushButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_expensesPushButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+}
+

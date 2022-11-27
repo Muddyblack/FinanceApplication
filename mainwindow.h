@@ -18,6 +18,10 @@ public:
 private slots:
     void on_add_expenses_Button_clicked();
 
+    void on_dashboardPushButton_clicked();
+
+    void on_expensesPushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -70,6 +70,9 @@
     </item>
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="currentIndex">
        <number>1</number>
       </property>
@@ -213,6 +216,9 @@ hr { height: 1px; border-width: 0; }
          </property>
         </widget>
         <widget class="QLineEdit" name="sqlStatusLine">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>310</x>
@@ -220,6 +226,12 @@ hr { height: 1px; border-width: 0; }
            <width>231</width>
            <height>28</height>
           </rect>
+         </property>
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
          </property>
          <property name="text">
           <string>Status</string>
