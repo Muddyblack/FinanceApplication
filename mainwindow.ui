@@ -25,14 +25,14 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="dashboardPushButton">
          <property name="text">
           <string>Dashboard</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="expensesPushButton">
          <property name="text">
           <string>Ausgaben</string>
          </property>
@@ -52,14 +52,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="settingsPushButton">
          <property name="text">
           <string>Einstellungen</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="infoPushButton">
          <property name="text">
           <string>Info</string>
          </property>
@@ -147,9 +147,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>30</y>
+          <y>20</y>
           <width>651</width>
-          <height>201</height>
+          <height>211</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -158,24 +158,11 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLineEdit" name="expensesPriceLine">
-         <property name="geometry">
-          <rect>
-           <x>306</x>
-           <y>1</y>
-           <width>113</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
         <widget class="QComboBox" name="expensesCategoryComboBox">
          <property name="geometry">
           <rect>
-           <x>420</x>
-           <y>0</y>
+           <x>417</x>
+           <y>1</y>
            <width>221</width>
            <height>31</height>
           </rect>
@@ -188,7 +175,7 @@
          <property name="geometry">
           <rect>
            <x>306</x>
-           <y>30</y>
+           <y>31</y>
            <width>331</width>
            <height>111</height>
           </rect>
@@ -206,7 +193,7 @@ hr { height: 1px; border-width: 0; }
          <property name="geometry">
           <rect>
            <x>550</x>
-           <y>160</y>
+           <y>161</y>
            <width>83</width>
            <height>29</height>
           </rect>
@@ -219,9 +206,32 @@ hr { height: 1px; border-width: 0; }
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>0</y>
+           <y>1</y>
            <width>291</width>
            <height>151</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="sqlStatusLine">
+         <property name="geometry">
+          <rect>
+           <x>310</x>
+           <y>161</y>
+           <width>231</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Status</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="expensesPriceSpin">
+         <property name="geometry">
+          <rect>
+           <x>307</x>
+           <y>1</y>
+           <width>111</width>
+           <height>31</height>
           </rect>
          </property>
         </widget>

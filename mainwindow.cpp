@@ -29,7 +29,7 @@ void MainWindow::on_add_expenses_Button_clicked()
     QString date = ui->calendarWidget->selectedDate().toString("yyyy.MM.dd");
     QString year = date.split('.')[0];
     QString category = ui->expensesCategoryComboBox->currentText();
-    QString price = ui->expensesPriceLine->text().replace(',', '.');
+    QString price = ui->expensesPriceSpin->cleanText().replace(',', '.');
     QString comment = ui->expensesComment->toPlainText();
 
 
@@ -55,6 +55,12 @@ void MainWindow::on_add_expenses_Button_clicked()
                    "category VARCHAR(28), "
                    "price FLOAT, "
                    "comment TINYTEXT)");
+    query.exec();
+
+    //Categories Table
+    query.prepare("CREATE TABLE IF NOT EXISTS Categories "
+                  "(ID INTEGER, "
+                   "category VARCHAR(28))");
     query.exec();
 
 
