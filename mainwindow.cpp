@@ -6,6 +6,7 @@
 #include <QSqlQuery>
 #include <filesystem>
 
+QSqlDatabase db;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,35 +35,72 @@ void MainWindow::on_add_expenses_Button_clicked()
 
 
     //Create Path directory if not existent
-    if(!std::filesystem::is_directory(db_path) || std::filesystem::exists(db_path))
+    if(!std::filesystem::exists(db_file))
     {
         std::filesystem::create_directories(db_path);
+
+        //connect to DB
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName(QString::fromStdString(db_file));
+
+        //open DB and execute Code
+        db.open();
+        QSqlQuery query(db);
+
+        //Create Table if not existing
+        query.prepare("CREATE TABLE IF NOT EXISTS '" + year + "' "
+                      "(buy_date DATE, "
+                       "category VARCHAR(28), "
+                       "price FLOAT, "
+                       "comment TINYTEXT)");
+        query.exec();
+
+        //Categories Table
+        query.prepare("CREATE TABLE IF NOT EXISTS Categories "
+                      "(ID INTEGER NOT NULL, "
+                       "category VARCHAR(28) PRIMARY KEY)");
+        query.exec();
+
+        std::string stnd_catg[] = {"Unkategorisiert",
+                                   "Nahrungsmittel",
+                                   "Unterwegs Essen",
+                                   "Trinken",
+                                   "Bildung",
+                                   "Unterhaltung",
+                                   "Auto & Transport",
+                                   "Rechnungen & Dienste",
+                                   "Gesundheit & Fitness",
+                                   "Versicherungen",
+                                   "Miete/Hypothek",
+                                   "Shopping",
+                                   "Urlaub",
+                                   "Familie",
+                                   "Lohn",
+                                   "Bonus Einkommen"};
+        std::string catg_sql_cmd = "INSERT INTO Categories VALUES ";
+
+        for(int i = 0; i <= stnd_catg->length(); ++i) {
+            catg_sql_cmd += "(" + std::to_string(i+1) + ", '" + stnd_catg[i] + "')";
+            if(i < (stnd_catg->length())) {
+                catg_sql_cmd += ", ";
+            } else if(i == (stnd_catg->length())) {
+                catg_sql_cmd += ";";
+            }
+        }
+        std::cout << catg_sql_cmd << std::endl;
+        query.prepare(QString::fromStdString(catg_sql_cmd));
+
+        query.exec();
+    }else{
+        //connect to DB
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName(QString::fromStdString(db_file));
+
+        //open DB and execute Code
+        db.open();
     }
 
-
-
-    //connect to DB
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(QString::fromStdString(db_file));
-
-    //open DB and execute Code
-    db.open();
     QSqlQuery query(db);
-
-    //Create Table if not existing
-    query.prepare("CREATE TABLE IF NOT EXISTS '" + year + "' "
-                  "(buy_date DATE, "
-                   "category VARCHAR(28), "
-                   "price FLOAT, "
-                   "comment TINYTEXT)");
-    query.exec();
-
-    //Categories Table
-    query.prepare("CREATE TABLE IF NOT EXISTS Categories "
-                  "(ID INTEGER, "
-                   "category VARCHAR(28))");
-    query.exec();
-
 
     //Add expenses to table
     query.prepare("INSERT INTO '"+ year + "' (buy_date, category, price, comment) "
