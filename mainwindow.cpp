@@ -1,16 +1,13 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <iostream>
 
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <filesystem>
 
 std::string db_path = "./.src/Database";
 std::string db_file = db_path + "/FinanceDataBase.db";
 QString date;
 QString year;
 QSqlDatabase db;
+time_t last_add_expense_stamp;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -95,7 +92,6 @@ void MainWindow::update_expensesCategoryComboBox(){
     QSqlQuery query(db);
     query.prepare("SELECT category FROM Categories");
     query.exec();
-    //ui->expensesCategoryComboBox->clear();
     while(query.next()) {
         QString val = query.value(0).toString();
         if(ui->expensesCategoryComboBox->findText(val) == -1) {
@@ -112,9 +108,19 @@ void MainWindow::on_add_expenses_Button_clicked()
     QString price = ui->expensesPriceSpin->cleanText().replace(',', '.');
     QString comment = ui->expensesComment->toPlainText();
 
-    if((category.isEmpty()) || (price.toDouble() < 0.10)) {
-        ui->sqlStatusLine->setText("You Need a price and Category");
+    if((category.isEmpty()) || ((price.toDouble() < 0.10) && (price.toDouble() > -0.10))) {
+        ui->sqlStatusLine->setText("Du brauchst einen Preis und Kategorie");
+    }else if((time(0)-last_add_expense_stamp)<2) {
+        ui->sqlStatusLine->setText("Zu schnell hintereinander hinzugefügt");
     }else{
+        if(ui->expensesCategoryComboBox->findText(category) == -1){
+            /**********
+             * Missing Dialog to add new category with Image
+            **********/
+            QMessageBox Msgbox;
+            Msgbox.setText("sum of numbers are....");
+            Msgbox.exec();
+        }
         db.open();
         QSqlQuery query(db);
 
@@ -131,7 +137,9 @@ void MainWindow::on_add_expenses_Button_clicked()
         query.exec();
 
         db.close();
-        ui->sqlStatusLine->setText("Added Expense to Database");
+        ui->expensesPriceSpin->setValue(0);
+        ui->sqlStatusLine->setText("Ausgaben hinzugefügt: "+price+"€ "+category);
+        last_add_expense_stamp = time(0);
     }
 }
 

@@ -152,7 +152,7 @@
           <x>10</x>
           <y>20</y>
           <width>648</width>
-          <height>192</height>
+          <height>203</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -162,6 +162,9 @@
          <enum>QFrame::Raised</enum>
         </property>
         <widget class="QComboBox" name="expensesCategoryComboBox">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>417</x>
@@ -171,13 +174,16 @@
           </rect>
          </property>
          <property name="mouseTracking">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="tabletTracking">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="acceptDrops">
-          <bool>true</bool>
+          <bool>false</bool>
+         </property>
+         <property name="locale">
+          <locale language="German" country="Germany"/>
          </property>
          <property name="editable">
           <bool>true</bool>
@@ -189,7 +195,7 @@
            <x>306</x>
            <y>31</y>
            <width>331</width>
-           <height>111</height>
+           <height>121</height>
           </rect>
          </property>
          <property name="tabletTracking">
@@ -211,7 +217,7 @@ hr { height: 1px; border-width: 0; }
          <property name="geometry">
           <rect>
            <x>550</x>
-           <y>161</y>
+           <y>173</y>
            <width>83</width>
            <height>29</height>
           </rect>
@@ -271,9 +277,9 @@ hr { height: 1px; border-width: 0; }
          <property name="geometry">
           <rect>
            <x>308</x>
-           <y>160</y>
+           <y>161</y>
            <width>240</width>
-           <height>31</height>
+           <height>41</height>
           </rect>
          </property>
          <property name="mouseTracking">
