@@ -16,11 +16,15 @@ public:
     ~MainWindow();
 
 private slots:
+    void update_expensesCategoryComboBox();
+
     void on_add_expenses_Button_clicked();
 
     void on_dashboardPushButton_clicked();
 
     void on_expensesPushButton_clicked();
+
+    void on_expensesCategoryComboBox_activated(int index);
 
 private:
     Ui::MainWindow *ui;

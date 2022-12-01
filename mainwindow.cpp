@@ -6,6 +6,10 @@
 #include <QSqlQuery>
 #include <filesystem>
 
+std::string db_path = "./.src/Database";
+std::string db_file = db_path + "/FinanceDataBase.db";
+QString date;
+QString year;
 QSqlDatabase db;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -13,27 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-}
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-//button to add expenses
-void MainWindow::on_add_expenses_Button_clicked()
-{
-    //DEC
-    std::string db_path = "./.src/Database";
-    std::string db_file = db_path + "/FinanceDataBase.db";
-
-    QString date = ui->calendarWidget->selectedDate().toString("yyyy.MM.dd");
-    QString year = date.split('.')[0];
-    QString category = ui->expensesCategoryComboBox->currentText();
-    QString price = ui->expensesPriceSpin->cleanText().replace(',', '.');
-    QString comment = ui->expensesComment->toPlainText();
-
-
+    date = ui->calendarWidget->selectedDate().toString("yyyy.MM.dd");
+    year = date.split('.')[0];
     //Create Path directory if not existent
     if(!std::filesystem::exists(db_file))
     {
@@ -87,7 +73,6 @@ void MainWindow::on_add_expenses_Button_clicked()
                 catg_sql_cmd += ";";
             }
         }
-        std::cout << catg_sql_cmd << std::endl;
         query.prepare(QString::fromStdString(catg_sql_cmd));
 
         query.exec();
@@ -95,26 +80,59 @@ void MainWindow::on_add_expenses_Button_clicked()
         //connect to DB
         db = QSqlDatabase::addDatabase("QSQLITE");
         db.setDatabaseName(QString::fromStdString(db_file));
-
-        //open DB and execute Code
-        db.open();
     }
 
+    update_expensesCategoryComboBox();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::update_expensesCategoryComboBox(){
+    db.open();
     QSqlQuery query(db);
-
-    //Add expenses to table
-    query.prepare("INSERT INTO '"+ year + "' (buy_date, category, price, comment) "
-                  "VALUES(:bd, :c, :p, :cc)");
-
-
-    query.bindValue(":bd", date);
-    query.bindValue(":c", category);
-    query.bindValue(":p", price);
-    query.bindValue(":cc", comment);
-
+    query.prepare("SELECT category FROM Categories");
     query.exec();
+    //ui->expensesCategoryComboBox->clear();
+    while(query.next()) {
+        QString val = query.value(0).toString();
+        if(ui->expensesCategoryComboBox->findText(val) == -1) {
+            ui->expensesCategoryComboBox->addItem(val);
+        }
+    }
+}
 
-    db.close();
+//button to add expenses
+void MainWindow::on_add_expenses_Button_clicked()
+{
+    //DEC
+    QString category = ui->expensesCategoryComboBox->currentText();
+    QString price = ui->expensesPriceSpin->cleanText().replace(',', '.');
+    QString comment = ui->expensesComment->toPlainText();
+
+    if((category.isEmpty()) || (price.toDouble() < 0.10)) {
+        ui->sqlStatusLine->setText("You Need a price and Category");
+    }else{
+        db.open();
+        QSqlQuery query(db);
+
+        //Add expenses to table
+        query.prepare("INSERT INTO '"+ year + "' (buy_date, category, price, comment) "
+                      "VALUES(:bd, :c, :p, :cc)");
+
+
+        query.bindValue(":bd", date);
+        query.bindValue(":c", category);
+        query.bindValue(":p", price);
+        query.bindValue(":cc", comment);
+
+        query.exec();
+
+        db.close();
+        ui->sqlStatusLine->setText("Added Expense to Database");
+    }
 }
 
 
@@ -126,6 +144,13 @@ void MainWindow::on_dashboardPushButton_clicked()
 
 void MainWindow::on_expensesPushButton_clicked()
 {
+
     ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_expensesCategoryComboBox_activated(int index)
+{
+    update_expensesCategoryComboBox();
 }
 
