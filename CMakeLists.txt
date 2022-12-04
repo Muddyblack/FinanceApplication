@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt6 REQUIRED COMPONENTS Sql)
+find_package(Qt6Charts)
 
 
 set(TS_FILES FinanceApplication_de_DE.ts)
@@ -48,13 +49,17 @@ else()
         add_executable(FinanceApplication
             ${PROJECT_SOURCES}
         )
+    add_executable(FinanceApplication ${PROJECT_SOURCES})
     endif()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
+
+
 target_link_libraries(FinanceApplication PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(FinanceApplication PRIVATE Qt6::Sql)
+target_link_libraries(FinanceApplication PRIVATE Qt6::Widgets Qt6::Charts)
 
 set_target_properties(FinanceApplication PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

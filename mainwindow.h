@@ -8,7 +8,10 @@
 #include <filesystem>
 #include <time.h>
 #include <unistd.h>
-#include <QMessageBox>
+#include <QtCharts>
+#include <QChartView>
+#include <QPieSeries>
+#include <QPieSlice>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,6 +27,8 @@ public:
 
 private slots:
     void update_expensesCategoryComboBox();
+
+    void create_DonutChart();
 
     void on_add_expenses_Button_clicked();
 

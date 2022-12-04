@@ -74,7 +74,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <widget class="QFrame" name="frame_2">
@@ -94,10 +94,71 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QComboBox" name="comboBox"/>
+          <widget class="QComboBox" name="dash_year_comboBox"/>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_2"/>
+          <widget class="QComboBox" name="dash_monthcomboBox">
+           <item>
+            <property name="text">
+             <string>Januar</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Februar</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>März</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>April</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Mai</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Juni</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Juli</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>August</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>September</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Oktober</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>November</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Dezember</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -108,16 +169,6 @@
           <y>0</y>
           <width>311</width>
           <height>51</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QGraphicsView" name="graphicsView_2">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>250</y>
-          <width>341</width>
-          <height>281</height>
          </rect>
         </property>
        </widget>
@@ -143,6 +194,17 @@
           </rect>
          </property>
         </widget>
+       </widget>
+       <widget class="QFrame" name="expense_chartframe">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>190</y>
+          <width>341</width>
+          <height>351</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3"/>
        </widget>
       </widget>
       <widget class="QWidget" name="page_2">
@@ -186,7 +248,16 @@
           <locale language="German" country="Germany"/>
          </property>
          <property name="editable">
-          <bool>true</bool>
+          <bool>false</bool>
+         </property>
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="currentIndex">
+          <number>-1</number>
+         </property>
+         <property name="duplicatesEnabled">
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QTextEdit" name="expensesComment">

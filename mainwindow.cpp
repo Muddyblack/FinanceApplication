@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     update_expensesCategoryComboBox();
+    create_DonutChart();
 }
 
 MainWindow::~MainWindow()
@@ -100,6 +101,27 @@ void MainWindow::update_expensesCategoryComboBox(){
     }
 }
 
+void MainWindow::create_DonutChart(){
+    QPieSeries *series = new QPieSeries();
+    series->setHoleSize(0.35);
+    series->append("Protein 4.28%", 4.28);
+    QPieSlice *slice = series->append("Fat 15.6%", 15.6);
+
+    slice->setExploded();
+    slice->setLabelVisible();
+    series->append("Other 23.8%", 23.8);
+    series->append("Other 56.4%", 56.4);
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setAnimationDuration(QChart::SeriesAnimations);
+    chart->setTitle("");
+
+    QChartView *chartview = new QChartView(chart);
+    chartview->setRenderHint(QPainter::Antialiasing);
+
+    chartview->setParent(ui->expense_chartframe);
+}
 //button to add expenses
 void MainWindow::on_add_expenses_Button_clicked()
 {
@@ -113,14 +135,6 @@ void MainWindow::on_add_expenses_Button_clicked()
     }else if((time(0)-last_add_expense_stamp)<2) {
         ui->sqlStatusLine->setText("Zu schnell hintereinander hinzugefügt");
     }else{
-        if(ui->expensesCategoryComboBox->findText(category) == -1){
-            /**********
-             * Missing Dialog to add new category with Image
-            **********/
-            QMessageBox Msgbox;
-            Msgbox.setText("sum of numbers are....");
-            Msgbox.exec();
-        }
         db.open();
         QSqlQuery query(db);
 
@@ -140,6 +154,7 @@ void MainWindow::on_add_expenses_Button_clicked()
         ui->expensesPriceSpin->setValue(0);
         ui->sqlStatusLine->setText("Ausgaben hinzugefügt: "+price+"€ "+category);
         last_add_expense_stamp = time(0);
+
     }
 }
 
