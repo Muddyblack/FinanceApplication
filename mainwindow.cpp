@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     update_expensesCategoryComboBox();
+    update_Dashboard_Time_ComboBox();
     create_DonutChart();
 }
 
@@ -99,6 +100,21 @@ void MainWindow::update_expensesCategoryComboBox(){
             ui->expensesCategoryComboBox->addItem(val);
         }
     }
+    db.close();
+}
+
+void MainWindow::update_Dashboard_Time_ComboBox() {
+    db.open();
+    QSqlQuery query(db);
+    query.prepare("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'Categories';");
+    query.exec();
+    while(query.next()) {
+        QString val = query.value(0).toString();
+        if(ui->dash_year_comboBox->findText(val) == -1) {
+            ui->dash_year_comboBox->addItem(val);
+        }
+    }
+    ui->dash_year_comboBox->addItem("Alle");
     db.close();
 }
 
@@ -131,7 +147,6 @@ void MainWindow::create_DonutChart(){
     db.open();
     QSqlQuery query(db);
 
-    std::cout << sql_date_command.toStdString() << std::endl;
     query.prepare(sql_date_command);
     query.exec();
 
@@ -200,6 +215,7 @@ void MainWindow::on_add_expenses_Button_clicked()
 
 void MainWindow::on_dashboardPushButton_clicked()
 {
+    create_DonutChart();
     ui->stackedWidget->setCurrentIndex(0);
 }
 

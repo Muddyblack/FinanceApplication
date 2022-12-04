@@ -28,6 +28,8 @@ public:
 private slots:
     void update_expensesCategoryComboBox();
 
+    void update_Dashboard_Time_ComboBox();
+
     void create_DonutChart();
 
     void on_add_expenses_Button_clicked();
