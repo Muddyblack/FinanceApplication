@@ -40,6 +40,12 @@ private slots:
 
     void on_expensesCategoryComboBox_activated(int index);
 
+    void on_dash_monthcomboBox_currentIndexChanged(int index);
+
+    void on_dash_daycomboBox_currentIndexChanged(int index);
+
+    void on_dash_year_comboBox_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
 };

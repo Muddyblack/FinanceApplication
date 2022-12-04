@@ -89,6 +89,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//function will return total number of days
+int  getNumberOfDays(int month, int year)
+{
+    //leap year condition, if month is 2
+    if( month == 2)
+    {
+        if((year%400==0) || (year%4==0 && year%100!=0))
+            return 29;
+        else
+            return 28;
+    }
+    //months which has 31 days
+    else if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8
+    ||month == 10 || month==12)
+        return 31;
+    else
+        return 30;
+}
+
 void MainWindow::update_expensesCategoryComboBox(){
     db.open();
     QSqlQuery query(db);
@@ -114,13 +133,41 @@ void MainWindow::update_Dashboard_Time_ComboBox() {
             ui->dash_year_comboBox->addItem(val);
         }
     }
-    ui->dash_year_comboBox->addItem("Alle");
+    if(ui->dash_year_comboBox->findText("Alle") == -1) {
+        ui->dash_year_comboBox->addItem("Alle");
+    }
     db.close();
+
+    std::string months[] = {"Alle", "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"};
+
+    int selected_year = ui->dash_year_comboBox->currentText().toInt();
+    int selected_month = ui->dash_monthcomboBox->currentIndex();
+
+    if(ui->dash_year_comboBox->findText("Alle") == -1) {
+        ui->dash_year_comboBox->addItem("Alle");
+    }
+
+    //ui->dash_monthcomboBox->clear();
+    if(QString::number(selected_year) != "Alle") {
+        for(int i=0; i<(sizeof(months) / sizeof(months[0])); ++i) {
+            if(ui->dash_monthcomboBox->findText(QString::fromStdString(months[i])) == -1) {
+                ui->dash_monthcomboBox->addItem(QString::fromStdString(months[i]));
+            }
+        }
+    }
+
+    ui->dash_daycomboBox->clear();
+    ui->dash_daycomboBox->addItem("Alle");
+    if(selected_month>0){
+        for(int i=1; i<=getNumberOfDays(selected_month, selected_year); ++i) {
+            ui->dash_daycomboBox->addItem(QString::number(i).rightJustified(2, '0'));
+        }
+    }
 }
 
 void MainWindow::create_DonutChart(){
     QString selected_year = ui->dash_year_comboBox->currentText();
-    QString selected_month = ui->dash_monthcomboBox->currentText();
+    QString selected_month = QString::number(ui->dash_monthcomboBox->currentIndex()).rightJustified(2, '0');
     QString selected_day = ui->dash_daycomboBox->currentText();
     QString sql_date_command = " SELECT category, SUM(price) FROM '";
 
@@ -129,7 +176,7 @@ void MainWindow::create_DonutChart(){
     }else{
         sql_date_command += selected_year + "' ";
 
-        if(selected_month != "Alle") {
+        if(selected_month != "00") {
             sql_date_command += "WHERE buy_date LIKE '" + selected_year + "." + selected_month + ".";
 
             if(selected_day != "Alle") {
@@ -146,12 +193,14 @@ void MainWindow::create_DonutChart(){
 
     db.open();
     QSqlQuery query(db);
+    QPieSeries *series = new QPieSeries();
+    series->setHoleSize(0.35);
 
+    std::cout << sql_date_command.toStdString() << std::endl;
     query.prepare(sql_date_command);
     query.exec();
 
-    QPieSeries *series = new QPieSeries();
-    series->setHoleSize(0.35);
+
 
 
     while(query.next()) {
@@ -176,7 +225,7 @@ void MainWindow::create_DonutChart(){
 
     chartview->setParent(ui->expense_chartframe);
 }
-//button to add expenses
+
 void MainWindow::on_add_expenses_Button_clicked()
 {
     //DEC
@@ -230,5 +279,24 @@ void MainWindow::on_expensesPushButton_clicked()
 void MainWindow::on_expensesCategoryComboBox_activated(int index)
 {
     update_expensesCategoryComboBox();
+}
+
+
+void MainWindow::on_dash_monthcomboBox_currentIndexChanged(int index)
+{
+    update_Dashboard_Time_ComboBox();
+    create_DonutChart();
+}
+
+
+void MainWindow::on_dash_daycomboBox_currentIndexChanged(int index)
+{
+    create_DonutChart();
+}
+
+
+void MainWindow::on_dash_year_comboBox_currentIndexChanged(int index)
+{
+    create_DonutChart();
 }
 

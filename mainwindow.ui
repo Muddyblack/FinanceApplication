@@ -97,82 +97,10 @@
           <widget class="QComboBox" name="dash_year_comboBox"/>
          </item>
          <item>
-          <widget class="QComboBox" name="dash_monthcomboBox">
-           <item>
-            <property name="text">
-             <string>Alle</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Januar</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Februar</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>März</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>April</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Mai</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Juni</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Juli</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>August</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>September</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Oktober</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>November</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Dezember</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="dash_monthcomboBox"/>
          </item>
          <item>
-          <widget class="QComboBox" name="dash_daycomboBox">
-           <item>
-            <property name="text">
-             <string>Alle</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="dash_daycomboBox"/>
          </item>
         </layout>
        </widget>
