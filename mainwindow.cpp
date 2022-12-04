@@ -169,13 +169,26 @@ void MainWindow::create_DonutChart(){
     QString selected_year = ui->dash_year_comboBox->currentText();
     QString selected_month = QString::number(ui->dash_monthcomboBox->currentIndex()).rightJustified(2, '0');
     QString selected_day = ui->dash_daycomboBox->currentText();
-    QString sql_date_command = " SELECT category, SUM(price) FROM '";
+    QString sql_date_command = " SELECT category, SUM(price) FROM ";
     QString sql_date_cmd_income;
 
+    db.open();
+    QSqlQuery query(db);
+
+    query.prepare("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'Categories';");
+    query.exec();
+    std::string all_tables = "";
+    while(query.next()) {
+        all_tables += "'"+query.value(0).toString().toStdString()+"', ";
+    }
+
+    all_tables.erase(all_tables.size() - 2);
+    all_tables += " ";
+
     if(selected_year == "Alle") {
-        sql_date_command += "* WHERE ";
+        sql_date_command += QString::fromStdString(all_tables) + "WHERE ";
     }else{
-        sql_date_command += selected_year + "' WHERE ";
+        sql_date_command += "'" + selected_year + "' WHERE ";
 
         if(selected_month != "00") {
             sql_date_command += "buy_date LIKE '" + selected_year + "." + selected_month + ".";
@@ -194,8 +207,6 @@ void MainWindow::create_DonutChart(){
 
 
 
-    db.open();
-    QSqlQuery query(db);
     QPieSeries *series = new QPieSeries();
     series->setHoleSize(0.35);
 
@@ -232,14 +243,13 @@ void MainWindow::create_DonutChart(){
 
     db.close();
 
-    //QPieSlice *slice;
-    //slice->setExploded();
     series->setLabelsVisible();
 
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setAnimationDuration(QChart::SeriesAnimations);
-    chart->setTitle("");
+    chart->isDropShadowEnabled();
+    chart->legend()->hide();
 
     QChartView *chartview = new QChartView(chart);
     chartview->setRenderHint(QPainter::Antialiasing);

@@ -19,6 +19,9 @@ find_package(Qt6Charts)
 
 set(TS_FILES FinanceApplication_de_DE.ts)
 
+#set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/.src/Icons/Res.rc")
+#    qt_add_executable(Res ${PROJECT_SOURCES} ${app_icon_resource_windows})
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -26,6 +29,7 @@ set(PROJECT_SOURCES
         mainwindow.ui
         ${TS_FILES}
 )
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(FinanceApplication
@@ -54,8 +58,6 @@ else()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
-
-
 
 target_link_libraries(FinanceApplication PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(FinanceApplication PRIVATE Qt6::Sql)
