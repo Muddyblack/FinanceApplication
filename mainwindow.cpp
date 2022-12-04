@@ -170,6 +170,7 @@ void MainWindow::create_DonutChart(){
     QString selected_month = QString::number(ui->dash_monthcomboBox->currentIndex()).rightJustified(2, '0');
     QString selected_day = ui->dash_daycomboBox->currentText();
     QString sql_date_command = " SELECT category, SUM(price) FROM '";
+    QString sql_date_cmd_income;
 
     if(selected_year == "Alle") {
         sql_date_command += "* WHERE ";
@@ -188,7 +189,9 @@ void MainWindow::create_DonutChart(){
             sql_date_command += "' AND ";
         }
     }
+    sql_date_cmd_income = sql_date_command + "category LIKE 'Lohn' OR category LIKE 'Bonus Einkommen' GROUP BY category ";
     sql_date_command += "category NOT LIKE 'Lohn' AND category NOT LIKE 'Bonus Einkommen' GROUP BY category ";
+
 
 
     db.open();
@@ -197,17 +200,35 @@ void MainWindow::create_DonutChart(){
     series->setHoleSize(0.35);
 
     std::cout << sql_date_command.toStdString() << std::endl;
+    std::cout << sql_date_cmd_income.toStdString() << std::endl;
+
     query.prepare(sql_date_command);
     query.exec();
 
-
-
+    double expenditure = 0;
 
     while(query.next()) {
         QString cat = query.value(0).toString();
         double price = query.value(1).toDouble();
+        expenditure += price;
         series->append(cat, price);
     }
+
+    query.prepare(sql_date_cmd_income);
+    query.exec();
+
+    double income = 0;
+    while(query.next()) {
+        income += query.value(1).toDouble();
+    }
+
+    double rest = income - expenditure;
+
+    std::cout << rest << std::endl;
+
+    ui->spending_progress_bar->setRange(0, income);
+    ui->spending_progress_bar->setFormat("%v%");
+    ui->spending_progress_bar->setValue(expenditure);
 
     db.close();
 
