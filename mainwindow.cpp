@@ -172,12 +172,12 @@ void MainWindow::create_DonutChart(){
     QString sql_date_command = " SELECT category, SUM(price) FROM '";
 
     if(selected_year == "Alle") {
-        sql_date_command += "* ";
+        sql_date_command += "* WHERE ";
     }else{
-        sql_date_command += selected_year + "' ";
+        sql_date_command += selected_year + "' WHERE ";
 
         if(selected_month != "00") {
-            sql_date_command += "WHERE buy_date LIKE '" + selected_year + "." + selected_month + ".";
+            sql_date_command += "buy_date LIKE '" + selected_year + "." + selected_month + ".";
 
             if(selected_day != "Alle") {
                 sql_date_command += selected_day;
@@ -185,10 +185,10 @@ void MainWindow::create_DonutChart(){
                 sql_date_command += "%";
             }
 
-            sql_date_command += "' ";
+            sql_date_command += "' AND ";
         }
     }
-    sql_date_command += "GROUP BY category ";
+    sql_date_command += "category NOT LIKE 'Lohn' AND category NOT LIKE 'Bonus Einkommen' GROUP BY category ";
 
 
     db.open();
@@ -260,7 +260,6 @@ void MainWindow::on_add_expenses_Button_clicked()
 
     }
 }
-
 
 void MainWindow::on_dashboardPushButton_clicked()
 {
