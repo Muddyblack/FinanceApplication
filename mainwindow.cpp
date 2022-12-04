@@ -99,18 +99,57 @@ void MainWindow::update_expensesCategoryComboBox(){
             ui->expensesCategoryComboBox->addItem(val);
         }
     }
+    db.close();
 }
 
 void MainWindow::create_DonutChart(){
+    QString selected_year = ui->dash_year_comboBox->currentText();
+    QString selected_month = ui->dash_monthcomboBox->currentText();
+    QString selected_day = ui->dash_daycomboBox->currentText();
+    QString sql_date_command = " SELECT category, SUM(price) FROM '";
+
+    if(selected_year == "Alle") {
+        sql_date_command += "* ";
+    }else{
+        sql_date_command += selected_year + "' ";
+
+        if(selected_month != "Alle") {
+            sql_date_command += "WHERE buy_date LIKE '" + selected_year + "." + selected_month + ".";
+
+            if(selected_day != "Alle") {
+                sql_date_command += selected_day;
+            }else{
+                sql_date_command += "%";
+            }
+
+            sql_date_command += "' ";
+        }
+    }
+    sql_date_command += "GROUP BY category ";
+
+
+    db.open();
+    QSqlQuery query(db);
+
+    std::cout << sql_date_command.toStdString() << std::endl;
+    query.prepare(sql_date_command);
+    query.exec();
+
     QPieSeries *series = new QPieSeries();
     series->setHoleSize(0.35);
-    series->append("Protein 4.28%", 4.28);
-    QPieSlice *slice = series->append("Fat 15.6%", 15.6);
 
-    slice->setExploded();
-    slice->setLabelVisible();
-    series->append("Other 23.8%", 23.8);
-    series->append("Other 56.4%", 56.4);
+
+    while(query.next()) {
+        QString cat = query.value(0).toString();
+        double price = query.value(1).toDouble();
+        series->append(cat, price);
+    }
+
+    db.close();
+
+    //QPieSlice *slice;
+    //slice->setExploded();
+    series->setLabelsVisible();
 
     QChart *chart = new QChart();
     chart->addSeries(series);
